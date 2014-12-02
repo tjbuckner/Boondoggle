@@ -1,0 +1,625 @@
+//out: boondoggle.css
+@bg-color: #2C6D99; //darken(@panel-color, 30%)
+
+@panel-color: #5C97BF; //#CEB150 #5f96c6 #5C97BF
+@other-month-color: darken(@panel-color, 20%); //#AE902E
+
+@highlight-color: #f5d4b3; //#FFC470 ebab32 efa678 #e6bc4a #f2d074
+@white: white;
+
+@separator-color: @other-month-color; //#de5858
+
+@submit-color: #38a265; //#27a227
+@close-color: #bf5c5c; //#a22727
+
+ .row {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.modal {
+    margin-top: 100px;
+}
+.modal-header {
+    background-color: @panel-color;
+    color: @white;
+    border-bottom: 1px solid @panel-color;
+}
+.delete-btn {
+     position: absolute;
+     left: 15px;
+}
+tr {
+    cursor: pointer;
+}
+.options-td {
+    text-align: center;
+}
+tr.fc-minor {
+    cursor: pointer;
+}
+.btn-trash-sm {
+    background-color: @close-color;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 5px 0px darken(@close-color, 10%);
+    height: 25px;
+    width: 25px;
+    margin-top: 3px;
+    outline: none;
+}
+#trashcontainer, #submitcontainer, #optionscontainer {
+    display:inline;
+    overflow: hidden;
+}
+.btn-modify-sm {
+    background-color: @submit-color;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 5px 0px darken(@submit-color, 10%);
+    min-width: 100px;
+    height: 25px;
+    margin-top: 3px;
+    outline:none;
+}
+.btn-save-sm {
+    background-color: @submit-color;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 5px 0px darken(@submit-color, 10%);
+    min-width: 100px;
+    height: 25px;
+    margin-top: 3px;
+    outline:none;
+}
+.classbtn {
+    display: inline;
+}
+.table>tbody>tr>td {
+    padding: 4px !important;
+}
+#class-table {
+    border: 2px solid @other-month-color !important;
+    background-color: @panel-color !important;
+}
+#class-table td {
+    border: 2px solid @other-month-color !important;
+    height: 40px;
+}
+#class-table th {
+    border: 2px solid @other-month-color !important;
+    text-align: center;
+    cursor: default !important;
+}
+#optionscontainer {
+    text-align: center;
+}
+textarea {
+     resize: none;
+}
+.modal-body {
+    background-color: lighten(@panel-color, 20%);
+    color: @white;
+}
+.modal-footer {
+    background-color: lighten(@panel-color, 10%);
+    color: @white;
+    max-height: 71px !important;
+    border-top: 1px solid lighten(@panel-color, 10%);
+}
+.boon-logo {
+    text-align: center;
+    margin-left: 45px !important;
+    margin-top: 10px;
+}
+.boon-logo-navbar {
+    width: 20%;
+    margin-top: -3px;
+    display: inline;
+}
+input[type="text"] {
+    background-color: @white !important;
+}
+.calendar-heading {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: @panel-color !important;
+    background-image: none !important;
+    border-bottom-width: 5px !important;
+    border-color: @separator-color !important;
+}
+.navbar-default {
+    background-image: none !important;
+    background-color: @panel-color;
+
+    border-radius: 0px;
+    border-bottom-width: 5px;
+    border-color: @separator-color !important;
+}
+.panel-day {
+    min-height: 125px;
+    border-bottom: 5px solid @panel-color !important;
+    border-color: @panel-color !important;
+}
+.panel-heading,
+.panel-primary {
+    border-color: @other-month-color !important;
+    border-width: 3px;
+}
+.fc-day-number {
+    color: @separator-color;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: lighten(@other-month-color, 45%) !important;
+    cursor: pointer;
+}
+.icon-bar {
+    background-color: @white !important;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: @other-month-color !important;
+}
+.navbar-default .navbar-toggle {
+    border-color: @white;
+}
+
+.fc-today {
+    background-color: @highlight-color !important;//lighten(@panel-color, 10%) !important;
+    color: @white;
+}
+.fc-other-month {
+    background: lighten(@other-month-color, 35%);
+}
+.fc-day-number.fc-other-month {
+    opacity: 1;
+    color: @white;
+    background: lighten(@other-month-color, 25%) !important;
+}
+.fc-day-number.fc-today {
+    background-color: darken(@highlight-color, 10%) !important;//lighten(@panel-color, 5%) !important;
+}
+.fc-event {
+    cursor: pointer;
+}
+.login-panel {
+    margin-top: 250px;
+}
+.panel-day .panel-heading {
+    text-align: right;
+    font-weight: bold;
+    max-height: 35px;
+    font-size: 12px;
+    background-color: @panel-color !important;
+    background-image: none !important;
+    border-bottom-width: 5px !important;
+    border-color: @separator-color !important;
+}
+.calendar-panel {
+    border-width: 2px !important;
+    border-bottom: 5px solid @other-month-color !important;
+    border-radius: 2px;
+    border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    min-height: 500px;
+}
+.active > a {
+    background-color: @other-month-color !important;
+    background-image: none !important;
+    color: @white !important;
+}
+a {
+    color: @white !important;
+}
+table {
+}
+.logo {
+    font-family: 'Pacifico', cursive;
+    color: @white !important;
+    display: inline;
+    font-size: 55px;
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.25);
+}
+.logo-navbar {
+    font-family: 'Pacifico', cursive;
+    color: @white !important;
+    display: inline;
+    font-size: 20px;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+}
+.login-heading {
+    padding-bottom: 15px;
+    font-size: 35px;
+    font-weight: normal;
+    text-shadow: 0 1px 0 rgba(255,255,255,.25);
+    border-radius: 0px;
+    border-bottom-width: 5px;
+    border-color: @separator-color !important;
+}
+th {
+    background-color: @other-month-color !important;
+    color: @white;
+}
+.glyphicon-info-sign {
+    margin-right: -250px;
+    font-size: 15px;
+    text-align: right;
+    display: inline;
+    top: -25px;
+}
+tr {
+    min-height: 150px !important;
+}
+tbody {
+    border-color: @panel-color !important;
+}
+#year {
+    height: 34px;
+    cursor: default;
+    width: 76px;
+    text-align: center;
+    right: 40px;
+    top: 10px;
+    position: absolute;
+    background-color: rgb(165, 198, 220) !important;
+    color: white;
+    border-color: rgb(92, 151, 191);
+}
+#description {
+    min-height: 230px;
+}
+#timepicker {
+    min-width: 81px;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px white inset; /* Change the color to your own background color */
+    -webkit-text-fill-color: #333;
+}
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: /*your box-shadow*/,0 0 0 50px white inset;
+    -webkit-text-fill-color: #333;
+}
+.fc-prev-button, .fc-next-button, .fc-month-button, .fc-basicWeek-button, .fc-basicDay-button, .fc-agendaDay-button, .fc-agendaWeek-button {
+    border-radius: 180px !important;
+    background-color: @other-month-color !important;
+    background-image: none;
+    color: @white;
+    border-color: @other-month-color;
+    outline: none !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2),0 1px 2px rgba(0,0,0,.05);
+}
+#btn-add-class-navbar {
+    cursor: pointer;
+}
+.fc-unthemed hr {
+    background-color: @other-month-color;
+}
+.fc-toolbar {
+    background-color: @panel-color;
+    width: 100%;
+    min-height: 50px;
+    padding: 0px;
+    margin-bottom: 0px !important;
+   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+#closex {
+    font-size: 25px;
+}
+.fc-unthemed th {
+    border: none;
+}
+.fc-unthemed td {
+    border-color: @other-month-color !important;
+    border-width: 1px !important;
+}
+.fc-unthemed tbody {
+}
+.form-horizontal {
+    margin-bottom: 0px;
+}
+.calendar-body {
+    padding: 0px;
+}
+
+.fc-left, .fc-right {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.fc-center {
+    font-weight: bolder;
+    margin-top: 13px;
+    color: @white;
+    font-size: 15px;
+}
+.fc-day:hover {
+    cursor: pointer !important;
+}
+.panel {
+    margin-bottom: 0px !important;
+}
+.other-month {
+    background-color: @other-month-color;
+    color: @white;
+}
+.btn:hover {
+    color: @white !important;
+}
+body {
+    background-color: @bg-color;
+    font-family: 'Roboto', sans-serif;
+    background-image: url("swirl_pattern.png");
+}
+.fc-day-header {
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+.table-panel-body {
+    padding-bottom: 0px;
+    margin-bottom: -10px;
+}
+.modal-content {
+    border: 3px solid @other-month-color;
+    border-radius: 3px !important;
+}
+.btn-submit {
+    background-color: @submit-color !important;
+    background-image: none;
+    border: 2px solid #1b5c1b;
+    box-shadow: 0px 5px 0px darken(@submit-color, 10%);
+    margin-top: 0px;
+    width: 100%;
+    height: 40px;
+    color: @white;
+    margin-bottom: 17px;
+    padding: 0px;
+    border: 0px;
+    outline: 0 !important;
+}
+.btn-submit:active {
+    box-shadow: 0px 0px 0px #1b5c1b;
+    margin-top: 5px;
+    background-color: @submit-color !important;
+    background-image: none;
+    border: 2px solid darken(@submit-color, 10%);
+    width: 100%;
+    height: 40px;
+    color: @white;
+    margin-bottom: 12px;
+    padding: 0px;
+    border: 0px;
+    background-image: none;
+    background-position: 0;
+    outline: 0 !important;
+}
+.btn-submit:hover {
+    border: none;
+    background-image: none;
+    background-position: 0;
+}
+.logo-letter {
+    font-size: 25px;
+}
+.btn-register {
+    background-color: @panel-color !important; //428bca
+    background-image: none;
+    border: 2px solid @other-month-color;
+    box-shadow: 0px 5px 0px @other-month-color;
+    margin-top: 0px;
+    width: 100%;
+    height: 40px;
+    padding: 0px;
+    border: 0px;
+    color: @white;
+    outline: 0 !important;
+}
+.btn-register:active {
+    background-color: @panel-color !important;
+    background-image: none;
+    border: 2px solid #1a4e7b;
+    box-shadow: 0px 0px 0px #1a4e7b;
+    margin-top: 5px;
+    width: 100%;
+    height: 40px;
+    padding: 0px;
+    border: 0px;
+    color: @white;
+    outline: 0 !important;
+    margin-bottom: -5px !important;
+}
+.submit {
+    background-color: @submit-color !important;
+    background-image: none;
+    box-shadow: 0px 5px 0px darken(@submit-color, 10%);
+    width: 150px;
+    height: 40px;
+    color: @white;
+    margin-top: 0px;
+    padding: 0px;
+    border: 0px;
+    outline: 0 !important;
+    margin-right: -20px;
+    z-index: 999999;
+}
+select {
+    z-index: 999999;
+}
+.btn-colorselector {
+    width: 100% !important;
+    height: 34px !important;
+}
+.navbar-default .navbar-collapse {
+    border-color: @other-month-color;
+}
+.submit:active {
+    background-color: @submit-color !important;
+    background-image: none;
+    box-shadow: 0px 0px 0px #1b5c1b;
+    width: 150px;
+    margin-top: 5px;
+    height: 40px;
+    color: @white;
+    padding: 0px;
+    border: 0px;
+    background-image: none;
+    background-position: 0;
+    outline: 0 !important;
+    margin-right: -20px;
+}
+.add-class-button {
+    background-color: @panel-color !important;
+    background-image: none;
+    box-shadow: 0px 5px 0px darken(@panel-color, 10%);
+    color: @white;
+    margin-bottom: 5px;
+    border: 0px;
+    outline: 0 !important;
+    border-radius: 5px;
+    height: 30px;
+}
+.form-class {
+    margin-bottom: 0px;
+}
+#class-year {
+    height: 34px;
+    max-width: 100%;
+}
+#class-number {
+    max-width: 100%;
+}
+#class-name, #class-instructor-name, #class-number {
+    height: 34px;
+}
+#class-name {
+    max-width: 100%;
+}
+.td-class {
+    padding: 3px !important;
+}
+.td-class-year {
+    max-width: 80px;
+}
+.td-class-num {
+     max-width: 105px;
+}
+.td-class-name {
+     width: 240px;
+}
+.td-class-instructor-name {
+    max-width: 180px;
+}
+.add-class-button:active {
+    background-color: @panel-color !important;
+    background-image: none;
+    box-shadow: 0px 0px 0px darken(@panel-color, 10%);
+    margin-top: 5px;
+    color: @white;
+    margin-bottom: 0px;
+    border: 0px;
+    background-image: none;
+    outline: 0 !important;
+    border-radius: 5px;
+}
+.close-btn {
+    background-color: @close-color !important;
+    background-image: none;
+    box-shadow: 0px 5px 0px darken(@close-color, 10%);
+    width: 75px;
+    height: 40px;
+    color: @white;
+    padding: 0px;
+    border: 0px;
+    outline: 0 !important;
+    margin-left: -20px;
+    z-index: 999999;
+}
+.close-btn:active {
+    background-color: @close-color !important;
+    background-image: none;
+    box-shadow: 0px 0px 0px #5c1b1b;
+    margin-top: 5px;
+    width: 75px;
+    height: 40px;
+    color: @white;
+    padding: 0px;
+    border: 0px;
+    outline: 0 !important;
+    margin-left: -20px;
+}
+.btn-default {
+    text-shadow: none;
+}
+.btn-default:focus {
+    color: @white;
+}
+#cal-viewchange-heading {
+    background-color: @panel-color;
+    text-align: center;
+    background-image: none;
+    border-radius: 0px;
+    font-size: 15px;
+}
+.btn-changeview {
+    background-color: @panel-color;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    outline: none;
+    box-shadow: 0px 5px 0px darken(@panel-color, 10%);
+}
+.btn-changeview:active {
+    box-shadow: 0px 0px 0px darken(@panel-color, 10%);
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#cal-viewchange-body {
+    background-color: lighten(@other-month-color, 45%) !important;
+    color: @white;
+    text-align: center;
+    padding: 10px;
+    padding-bottom: 5px;
+}
+#cal-viewchange-panel {
+    border-width: 2px;
+}
+.qtip-content {
+    border-color: @other-month-color !important;
+    background-color: @panel-color;
+    color: @white;
+}
+.qtip-titlebar, .qtip-title, .qtip-default {
+     border-color: @other-month-color !important;
+     background-color: @other-month-color !important;
+     color: @white !important;
+}
+.label-boondoggle {
+    background-color: @panel-color !important;
+    font-size: 100% !important;
+    padding: .5em .5em .5em;
+}
+.logo-panel {
+    height: 200px;
+    background-color: @panel-color;
+    color: @white;
+    font-size: 15px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-width: 5px;
+    border-bottom-color: @other-month-color !important;
+    text-shadow: 0 1px 0 rgba(255,255,255,.25);
+}
+.login-body {
+    background-color: lighten(@panel-color, 15%);
+}
+.form-control {
+    background-color: @white !important;
+    border-color: darken(@panel-color, 10%);
+    border-width: 1px;
+}
+.fc hr {
+    border-width: 0px !important;
+}
+.fc-today ~ .fc-today:hover {
+    background-color: lighten(@highlight-color, 30%) !important;
+}
