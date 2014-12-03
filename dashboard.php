@@ -167,10 +167,12 @@ $(document).ready(function () {
             $("#modal-form").attr("action", "modifyHomework.php");
             //set the text of the submit button to Save Changes.
             $(".submit").html("Save Changes");
-
+               //if the event is all day...
                if(calEvent.allDay){
+                    //then set the timepicker to All Day
                     $("#timepicker").val("All Day");
                }
+               //else...
                else {
                     //set the timepicker's time to the time of the event.
                     $("#timepicker").timepicker('setTime', calEvent.start.format("h:mma"));
