@@ -6,7 +6,7 @@ session_start();
         exit();
     }
 
-$ID = $_POST["event_id"];
+$ID = htmlspecialchars($_POST["event_id"]);
 
 //open database connection
 $conn = mysql_connect('localhost','c2230a09','c2230a09') or trigger_error("SQL", E_USER_ERROR);

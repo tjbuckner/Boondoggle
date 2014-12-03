@@ -5,11 +5,11 @@
         exit();
     }
 
-    $title = $_POST['title'];
-    $due_date = $_POST['due_date'];
-    $description = $_POST['description'];
-    $class_id = $_POST['class_id'];
-    $all_day = $_POST['all_day'];
+    $title = htmlspecialchars($_POST['title']);
+    $due_date = htmlspecialchars($_POST['due_date']);
+    $description = htmlspecialchars($_POST['description']);
+    $class_id = htmlspecialchars($_POST['class_id']);
+    $all_day = htmlspecialchars($_POST['all_day']);
 
     $conn = mysql_connect('localhost','c2230a09','c2230a09') or trigger_error(header("Location: dashboard.php"));
     $db = mysql_select_db('c2230a09proj',$conn) or trigger_error(header("Location: dashboard.php"));

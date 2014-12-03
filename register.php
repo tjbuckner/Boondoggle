@@ -7,11 +7,11 @@
             header("Location: loginForm.php");
         }
 
-        $firstName = $_POST["firstName"];
-        $lastName = $_POST["lastName"];
-        $username = $_POST["userName"];
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+        $firstName = htmlspecialchars($_POST["firstName"]);
+        $lastName = htmlspecialchars($_POST["lastName"]);
+        $username = htmlspecialchars($_POST["userName"]);
+        $email = htmlspecialchars($_POST["email"]);
+        $password = htmlspecialchars($_POST["password"]);
 
         //open database connection
         $conn = mysql_connect('localhost','c2230a09','c2230a09') or trigger_error("SQL", E_USER_ERROR);

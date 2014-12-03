@@ -6,12 +6,12 @@ session_start();
         exit();
     }
 
-    $id = $_POST["event_id"];
-    $title = $_POST["title"];
-    $description = $_POST["description"];
-    $class_id = $_POST['class_id'];
-    $all_day = $_POST['all_day'];
-    $due_date = $_POST['due_date'];
+    $id = htmlspecialchars($_POST["event_id"]);
+    $title = htmlspecialchars($_POST["title"]);
+    $description = htmlspecialchars($_POST["description"]);
+    $class_id = htmlspecialchars($_POST['class_id']);
+    $all_day = htmlspecialchars($_POST['all_day']);
+    $due_date = htmlspecialchars($_POST['due_date']);
 
     //open database connection
     $conn = mysql_connect('localhost','c2230a09','c2230a09') or trigger_error("SQL", E_USER_ERROR);

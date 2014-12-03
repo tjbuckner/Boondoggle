@@ -5,9 +5,9 @@
         exit();
     }
 
-    $year = $_POST['year'];
-    $class_num = $_POST['class_num'];
-    $class_name = $_POST['class_name'];
+    $year = htmlspecialchars($_POST['year']);
+    $class_num = htmlspecialchars($_POST['class_num']);
+    $class_name = htmlspecialchars($_POST['class_name']);
     $instructor_name = $_POST['instructor_name'];
     $color = $_POST['color'];
 

@@ -28,6 +28,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <link rel='stylesheet' href="boondoggle.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.0/fullcalendar.min.js"></script>
+    <link rel="shortcut icon" href="favicon.ico" />
     <script>
         $(document).ready(function(){
             $("#register").click(function() {

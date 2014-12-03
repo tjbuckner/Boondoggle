@@ -5,9 +5,9 @@
         exit();
     }
 
-    echo $_POST['class_id'];
+//    echo $_POST['class_id'];
 
-    $class_id = $_POST['class_id'];
+    $class_id = htmlspecialchars($_POST['class_id']);
 
     $conn = mysql_connect('localhost','c2230a09','c2230a09') or trigger_error(header("Location: dashboard.php"));
     $db = mysql_select_db('c2230a09proj',$conn) or trigger_error(header("Location: dashboard.php"));

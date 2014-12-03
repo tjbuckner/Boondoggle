@@ -32,335 +32,481 @@
     <script type="text/javascript" src="js/jquery-timepicker/jquery.timepicker.js"></script>
     <script type="text/javascript" src="js/bootstrap-colorselector-master/lib/bootstrap-colorselector-0.2.0/js/bootstrap-colorselector.js"></script>
     <link rel="stylesheet" href="js/bootstrap-colorselector-master/lib/bootstrap-colorselector-0.2.0/css/bootstrap-colorselector.css">
+    <link rel="shortcut icon" href="favicon.ico" />
     <script>
-        $(document).ready(function () {
+$(document).ready(function () {
 
-            var $autoresize = true;
-            var $deleteClicked;
-            var $submitClicked;
+    //var to store whether a view button has been selected (if it has, then disable autoresize for larger resolutions)
+    var $autoresize = true;
 
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev',
-                    center: 'title',
-                    right: 'next'
+    //initialize fullCalendar on the div with the id calendar.
+    $('#calendar').fullCalendar({
+        //define options for the header of the calendar
+        header: {
+            left: 'prev',
+            center: 'title',
+            right: 'next'
+        },
+        //set events editable to false (this prevents dragging/moving of events)
+        editable: false,
+        //set initial height to 800px;
+        height: 800,
+        //generate events from loadEvents.php, a file that echos JSON of the db's events
+        events: 'loadEvents.php',
+        //through eventRender, qtip2 tooltips will be attached.
+        eventRender: function (event, element) {
+            //on each element being rendered, attach a qtip...
+            element.qtip({
+                //with the content of:
+                content: {
+                    //set qtip's title to:
+                    title:  function() {
+                                //if the event has a class tied to it...
+                                if (event.class_num !== "")  {
+                                    //display class number, class name, and instructor name.
+                                    return event.class_num + ' - ' + event.class_name + '<br />' +
+                                    event.instructor_name;
+                                }
+                                //else...
+                                else {
+                                    //display No Class Defined.
+                                    return "No Class Defined";
+                                }
+                            },
+                    //set qtip's text to:
+                    text:   function() {
+                                //if the event has a title...
+                                if (event.title !== "")  {
+                                    //display the title with the description
+                                    return event.title + '<br />' +
+                                    event.description;
+                                }
+                                //otherwise display No Title with the description
+                                else {
+                                    return "No Title" + '<br />' + event.description;
+                                }
+                            }
                 },
-                editable: false,
-                height: 800,
-                events: 'loadEvents.php',
-                eventRender: function (event, element) {
-                    element.qtip({
-                        content: {
-                            title:  function() {
-                                        if (event.class_num !== "")  {
-                                            return event.class_num + ' - ' + event.class_name + '<br />' +
-                                            event.instructor_name;
-                                        }
-                                        else {
-                                            return "No Class Defined";
-                                        }
-                                    },
-                            text:   function() {
-                                        if (event.title !== "")  {
-                                            return event.title + '<br />' +
-                                            event.description;
-                                        }
-                                        else {
-                                            return "No Title" + '<br />' + event.description;
-                                        }
-                                    }
-                        },
-                        show: 'mouseover',
-                        position: {
-                            my: 'bottom center',
-                            at: 'top center'
-                        },
-                        defaultAllDayEventDuration: '00:30:00'
-                    });
+                //display the qtip at mouseover
+                show: 'mouseover',
+                //at the qtip's bottom center and the element's top center.
+                position: {
+                    my: 'bottom center',
+                    at: 'top center'
                 },
-                eventLimit: true,
-                eventLimitClick: "popover",
-                eventLimitText: "more",
-                dayClick: function (date, jsEvent, view) {
-                    $("#date-title").html(date.format("dddd, MMMM Do"));
-                    $("#due_date").val(date.format("YYYY-MM-DD"));
-                    $("#year").html(date.format("YYYY"));
-                    $("#class-select").val(0);
-                    $(".delete-btn").hide();
-                    $("#modal-form").attr("action", "addHomework.php");
-                    $(".submit").html("Add Homework");
-                    $("#title").val("");
-                    $("#description").val("");
-                    $("#addHomeworkModal").modal();
-                    $("#timepicker").timepicker('setTime', date.format("h:mma"));
-
-                },
-                eventColor: '#336282',
-                eventClick: function (calEvent, jsEvent, view) {
-                    $("#date-title").html(calEvent.start.format("dddd, MMMM Do"));
-                    $("#event_id").val(calEvent.id);
-                    $("#due_date").val(calEvent.start.format("YYYY-MM-DD"));
-                    $("#title").val(calEvent.title);
-                    $("#class-select").val(calEvent.class_id);
-                    $("#year").html(calEvent.start.format("YYYY"));
-                    $("#description").val(calEvent.description);
-                    $(".delete-btn").show();
-                    $("#modal-form").attr("action", "modifyHomework.php");
-                    $(".submit").html("Save Changes");
-                    $("#addHomeworkModal").modal();
-                    $("#timepicker").timepicker('setTime', calEvent.start.format("h:mma"));
-                }
-            });
-
-            $('.selector').qtip({
-                style: {
-                    classes: 'qtip'
-                }
-            });
-
-            $("input[type='text'], textarea").attr('spellcheck',false);
-
-            $("#new-colorselector").colorselector();
-
-            resizeCalendar();
-
-            $(window).resize(function () {
-                resizeCalendar();
 
             });
+        },
+        //this limits the amount of events that can be displayed on each day.
+        eventLimit: true,
+        //this makes it where if the events reach the limit, you can press a button that will show them on popover.
+        eventLimitClick: "popover",
+        //and this makes that button's text 'more'.
+        eventLimitText: "more",
+        //this triggers whenever a day is clicked.
+        dayClick: function (date, jsEvent, view) {
+            //set the modal's title to the day's date.
+            $("#date-title").html(date.format("dddd, MMMM Do"));
+            //set the modal's hidden field due_date to the day's date.
+            $("#due_date").val(date.format("YYYY-MM-DD"));
+            //set the modal's year to the day's year.
+            $("#year").html(date.format("YYYY"));
+            //set the class dropdown to none.
+            $("#class-select").val(0);
+            //hide the delete button that is used on eventClick.
+            $(".delete-btn").hide();
+            //change the form's action to addHomework.
+            $("#modal-form").attr("action", "addHomework.php");
+            //change the submit button's text to Add Homework.
+            $(".submit").html("Add Homework");
+            //empty out all the fields.
+            $("#title").val("");
+            $("#description").val("");
+            //set the timepicker's time to the time of the dayClick.
+            $("#timepicker").timepicker('setTime', date.format("h:mma"));
 
-            function resizeCalendar() {
-                var windowWidth = $(window).width();
-                if (windowWidth < 600) {
+            //and show the prepared modal.
+            $("#addHomeworkModal").modal();
+        },
+        //set default eventColor.
+        eventColor: '#336282',
+        //this triggers whenever an event is clicked.
+        eventClick: function (calEvent, jsEvent, view) {
+            //set the title of the modal to the event's date.
+            $("#date-title").html(calEvent.start.format("dddd, MMMM Do"));
+            //set the hidden field event_id to the event's id.
+            $("#event_id").val(calEvent.id);
+            //set the hidden field due_date to the event's date.
+            $("#due_date").val(calEvent.start.format("YYYY-MM-DD"));
+            //set the title field to the event's title.
+            $("#title").val(calEvent.title);
+            //select the event's class in the dropdown menu.
+            $("#class-select").val(calEvent.class_id);
+            //set the modal's year to the event's year.
+            $("#year").html(calEvent.start.format("YYYY"));
+            //set the description textarea to the event's description.
+            $("#description").val(calEvent.description);
+            //show the delete button.
+            $(".delete-btn").show();
+            //set the action of the form to modifyHomework.
+            $("#modal-form").attr("action", "modifyHomework.php");
+            //set the text of the submit button to Save Changes.
+            $(".submit").html("Save Changes");
+            //set the timepicker's time to the time of the event.
+            $("#timepicker").timepicker('setTime', calEvent.start.format("h:mma"));
 
-                    $("#calendar").fullCalendar('option', 'height', 600);
-                    $(".btn-changeview").css({"font-size":"9px"});
-                    $('#calendar').fullCalendar('changeView', 'agendaDay');
-                    $("#timepicker").css({"margin-left":"0px"});
-                    $(".modal-labels").css({"margin-top":"5px","margin-bottom":"11px"});
-                    $("#timepicker").css({"margin-bottom":"-4px"});
-                    $("#title").css({"margin-bottom":"-4px"});
-                    $(".manage-classes").hide();
-                    $(".welcome-msg").hide();
+            //and show the prepared modal.
+            $("#addHomeworkModal").modal();
+        }
+    });
 
-                    if (windowWidth < 350){
-                        $(".fc-center > h2").css("fontSize", "16px");
-                        $(".fc-center > h2").css("marginTop", "3px");
-                    }
-                    else {
-                        $(".fc-center > h2").css("fontSize", "20px");
-                        $(".fc-center > h2").css("marginTop", "0px");
-                    }
-                }
-                else if (windowWidth < 768) {
+    //this code assigns the css class qtip to all qtip objects.
+    $('.selector').qtip({
+        style: {
+            classes: 'qtip'
+        }
+    });
 
-                    $('#calendar').fullCalendar('changeView', 'agendaWeek');
-                    $("h2").css("fontSize", "20px");
-                    $("#calendar").fullCalendar('option', 'height', 600);
-                    $("#cal-bootstrap").addClass("col-lg-12");
-                    $("#cal-bootstrap").removeClass("col-lg-6 col-lg-offset-3 col-lg-10 col-lg-offset-1");
-                    $(".welcome-msg").hide();
-                    $("#timepicker").css({"margin-left":"0px"});
-                    $(".btn-changeview").css({"font-size":"9px"});
-                    $(".modal-labels").css({"margin-top":"5px","margin-bottom":"11px"});
-                    $("#timepicker").css({"margin-bottom":"-4px"});
-                    $("#title").css({"margin-bottom":"-4px"});
-                    $(".manage-classes").hide();
-                }
-                else if (windowWidth < 1170) {
+    //this is a roundabout way of turning spellcheck off of all textareas.
+    $("input[type='text'], textarea").attr('spellcheck',false);
 
-                    $('#calendar').fullCalendar('changeView', 'agendaWeek');
-                    $("h2").css("fontSize", "20px");
-                    $("#calendar").fullCalendar('option', 'height', 600);
-                    $("#cal-bootstrap").addClass("col-lg-12");
-                    $("#cal-bootstrap").removeClass("col-lg-6 col-lg-offset-3 col-lg-10 col-lg-offset-1");
-                    $(".welcome-msg").show();
-                    $("#timepicker").css({"margin-left":"-12px"});
-                    $(".btn-changeview").css({"font-size":"9px"});
-                    $(".modal-labels").css({"margin-top":"0px","margin-bottom":"0px"});
-                    $(".manage-classes").hide();
-                }
-                else if (windowWidth < 1600) {
+    //initialize the color selector in the homework modal.
+    $("#new-colorselector").colorselector();
 
-                    if($autoresize)
-                        $('#calendar').fullCalendar('changeView', 'month');
+    //initially resize the calendar.
+    resizeCalendar();
 
-                    $("h2").css("fontSize", "20px");
-                    $("#calendar").fullCalendar('option', 'height', 800);
-                    $("#cal-bootstrap").addClass("col-lg-10 col-lg-offset-1");
-                    $("#cal-bootstrap").removeClass("col-lg-6 col-lg-offset-3 col-lg-12");
-                    $(".welcome-msg").show();
-                    $("#timepicker").css({"margin-left":"0px"});
-                    $(".btn-changeview").css({"font-size":"9px"});
-                    $(".modal-labels").css({"margin-top":"0px","margin-bottom":"0px"});
-                    $(".manage-classes").show();
-                }
-                else {
+    //and every time the window is resized...
+    $(window).resize(function () {
+        //resize the calendar.
+        resizeCalendar();
 
-                    if($autoresize)
-                        $('#calendar').fullCalendar('changeView', 'month');
+    });
 
-                    $("h2").css("fontSize", "20px");
-                    $("#calendar").fullCalendar('option', 'height', 800);
-                    $("#cal-bootstrap").addClass("col-lg-6 col-lg-offset-3");
-                    $("#cal-bootstrap").removeClass("col-lg-10 col-lg-offset-1 col-lg-12");
-                    $(".welcome-msg").show();
-                    $("#timepicker").css({"margin-left":"0px"});
-                    $(".btn-changeview").css({"font-size":"14px"});
-                    $(".modal-labels").css({"margin-top":"0px","margin-bottom":"0px"});
-                    $(".manage-classes").show();
-                }
+    //function to resize the calendar responsively
+    function resizeCalendar() {
+        //first, get the current window width.
+        var windowWidth = $(window).width();
+        //and get the window height.
+        var windowHeight = $(window).height();
+        //this is the height we will make the calendar if the width is below 1170px.
+        var newHeight = windowHeight - 150;
+
+        //and don't let this height go below 400.
+        if (newHeight < 400){
+            newHeight = 400;
+        }
+
+        //if it's less than 600px...
+        if (windowWidth < 600) {
+            //set calendar's height to newHeight.
+            $("#calendar").fullCalendar('option', 'height', newHeight);
+            //change the font size of the view panel.
+            $(".btn-changeview").css({"font-size":"9px"});
+            //change the calendar view to agendaDay.
+            $('#calendar').fullCalendar('changeView', 'agendaDay');
+            //change the timepicker's left margin.
+            $("#timepicker").css({"margin-left":"0px"});
+            //change the margins of the modal labels.
+            $(".modal-labels").css({"margin-top":"5px","margin-bottom":"11px"});
+            //change the bottom margin of the timepicker.
+            $("#timepicker").css({"margin-bottom":"-4px"});
+            //change the bottom margin of the modal title.
+            $("#title").css({"margin-bottom":"-4px"});
+            //hide the option to manage classes.
+            $(".manage-classes").hide();
+            //and hide the welcome msg. (Welcome, user!)
+            $(".welcome-msg").hide();
+
+            //if it's less than 350px...
+            if (windowWidth < 350){
+                //change the font-size and margin of the header title.
+                $(".fc-center > h2").css("fontSize", "16px");
+                $(".fc-center > h2").css("marginTop", "3px");
             }
-
-            $("#timepicker").timepicker({
-                'step': 15,
-                'forceRoundTime': true,
-                'noneOption': [
-                    {
-                        'label': 'All Day',
-                        'value': 'All Day'
-                    }
-                ]
-            });
-
-            $("#btn-week").click(function() {
-                $('#calendar').fullCalendar('changeView', 'agendaWeek');
-                $autoresize = false;
-            });
-
-            $("#btn-day").click(function() {
-                $('#calendar').fullCalendar('changeView', 'agendaDay');
-                $autoresize = false;
-            });
-
-            $("#btn-month").click(function() {
+            else {
+                //change the font-size and margin of the header title.
+                $(".fc-center > h2").css("fontSize", "20px");
+                $(".fc-center > h2").css("marginTop", "0px");
+            }
+        }
+        //else if it's less than 768px...
+        else if (windowWidth < 768) {
+            //change the calendar view to agendaWeek.
+            $('#calendar').fullCalendar('changeView', 'agendaWeek');
+            //and change the font-size of the header title.
+            $("h2").css("fontSize", "20px");
+            //set calendar's height to newHeight.
+            $("#calendar").fullCalendar('option', 'height', newHeight);
+            //add the class col-lg-12 to the calendar so it'll be full width at this resolution.
+            $("#cal-bootstrap").addClass("col-lg-12");
+            //and remove the other lg classes.
+            $("#cal-bootstrap").removeClass("col-lg-6 col-lg-offset-3 col-lg-10 col-lg-offset-1");
+            //hide the welcome msg. (Welcome, user!)
+            $(".welcome-msg").hide();
+            //change the left margin of the timepicker.
+            $("#timepicker").css({"margin-left":"0px"});
+            //change the font of the view change buttons.
+            $(".btn-changeview").css({"font-size":"9px"});
+            //change the margins of the modal labels.
+            $(".modal-labels").css({"margin-top":"5px","margin-bottom":"11px"});
+            //change the bottom margin of the timepicker.
+            $("#timepicker").css({"margin-bottom":"-4px"});
+            //change the bottom margin of the calendar title.
+            $("#title").css({"margin-bottom":"-4px"});
+            //and hide the manage classes button on the navbar.
+            $(".manage-classes").hide();
+        }
+        //else if it's less than 1170px...
+        else if (windowWidth < 1170) {
+            //change the calendar's view to agendaWeek
+            $('#calendar').fullCalendar('changeView', 'agendaWeek');
+            //change the calendar title's fontsize to 20px.
+            $("h2").css("fontSize", "20px");
+            //set calendar's height to newHeight.
+            $("#calendar").fullCalendar('option', 'height', newHeight);
+            //add the class col-lg-12 to the calendar so it'll be full width at this resolution.
+            $("#cal-bootstrap").addClass("col-lg-12");
+            //and remove the other lg classes.
+            $("#cal-bootstrap").removeClass("col-lg-6 col-lg-offset-3 col-lg-10 col-lg-offset-1");
+            //show the welcome msg in the navbar.
+            $(".welcome-msg").show();
+            //change the left margin of the timepicker.
+            $("#timepicker").css({"margin-left":"-12px"});
+            //change the font size of the change view buttons.
+            $(".btn-changeview").css({"font-size":"9px"});
+            //change the margins of the modal labels.
+            $(".modal-labels").css({"margin-top":"0px","margin-bottom":"0px"});
+            //and hide the manage classes button on the navbar.
+            $(".manage-classes").hide();
+        }
+        //else if it's less than 1600px...
+        else if (windowWidth < 1600) {
+            //if autoresize is still on (meaning no change view buttons have been pressed)...
+            if($autoresize){
+                //change the calendar view to month.
                 $('#calendar').fullCalendar('changeView', 'month');
-                $autoresize = false;
-            });
+            }
+            //change the calendar title's fontsize to 20px.
+            $("h2").css("fontSize", "20px");
+            //set calendar's height to 800.
+            $("#calendar").fullCalendar('option', 'height', 800);
+            //add the classes col-lg-10 and col-lg-offset-1 so the calendar will take up 10/12 and will be offset by 1.
+            $("#cal-bootstrap").addClass("col-lg-10 col-lg-offset-1");
+            //remove the other lg classes.
+            $("#cal-bootstrap").removeClass("col-lg-6 col-lg-offset-3 col-lg-12");
+            //show the welcome msg in the navbar.
+            $(".welcome-msg").show();
+            //reset the left margin of the timepicker.
+            $("#timepicker").css({"margin-left":"0px"});
+            //change the fontsize of the change view buttons.
+            $(".btn-changeview").css({"font-size":"9px"});
+            //change the margins of the modal labels.
+            $(".modal-labels").css({"margin-top":"0px","margin-bottom":"0px"});
+            //and show the manage classes button in the navbar.
+            $(".manage-classes").show();
+        }
+        //else...
+        else {
+            //if autoresize is still on (meaning no change view buttons have been pressed)...
+            if($autoresize){
+                //change the calendar view to month.
+                $('#calendar').fullCalendar('changeView', 'month');
+            }
+            //change the calendar title's fontsize to 20px.
+            $("h2").css("fontSize", "20px");
+            //set calendar's height to 800.
+            $("#calendar").fullCalendar('option', 'height', 800);
+            //add the classes col-lg-6 and col-lg-offset-3 so the calendar will take up 6/12 and will be offset by 3.
+            $("#cal-bootstrap").addClass("col-lg-6 col-lg-offset-3");
+            //remove the other lg classes.
+            $("#cal-bootstrap").removeClass("col-lg-10 col-lg-offset-1 col-lg-12");
+            //show the welcome msg in the navbar.
+            $(".welcome-msg").show();
+            //change the left margin of the timepicker.
+            $("#timepicker").css({"margin-left":"0px"});
+            //change the fontsize of the change view buttons.
+            $(".btn-changeview").css({"font-size":"14px"});
+            //change the margins of the modal labels.
+            $(".modal-labels").css({"margin-top":"0px","margin-bottom":"0px"});
+            //and show the manage classes button in the navbar.
+            $(".manage-classes").show();
+        }
+    }
 
-            $("#btn-add-class-navbar").click(function() {
-                $("#newClass").hide();
-                $("#classesModal").modal();
-            });
+    //initialize the timepicker
+    $("#timepicker").timepicker({
+        //with 15 min steps
+        'step': 15,
+        //make sure time entered is rounded to 15s
+        'forceRoundTime': true,
+        //create label for all day
+        'noneOption': [
+            {
+                'label': 'All Day',
+                'value': 'All Day'
+            }
+        ]
+    });
 
+    //click listener for week view button
+    $("#btn-week").click(function() {
+        //change view to agendaWeek
+        $('#calendar').fullCalendar('changeView', 'agendaWeek');
+        //and disable autochanging the view in larger resolutions
+        $autoresize = false;
+    });
 
-            $(".form-control").keypress(function (event) {
-                if (event.which == 13) {
-                    event.preventDefault();
-                    $("#submit").click();
-                }
-            });
+    //click listener for day view button
+    $("#btn-day").click(function() {
+        //change view to agendaDay.
+        $('#calendar').fullCalendar('changeView', 'agendaDay');
+        //and disable autochanging the view in larger resolutions
+        $autoresize = false;
+    });
 
-            $("#modal-form").submit(function(e) {
-                e.preventDefault();
+    //click listener for month view button
+    $("#btn-month").click(function() {
+        //change view to month.
+        $('#calendar').fullCalendar('changeView', 'month');
+        //and disable autochanging the view in larger resolutions
+        $autoresize = false;
+    });
 
-                var $date = $("#due_date").val();
-                var $time = $("#timepicker").val();
+    //click listener for manage classes in the navbar
+    $("#btn-add-class-navbar").click(function() {
+        //hide the fields for newClass
+        $("#newClass").hide();
+        //show the modal for managing classes.
+        $("#classesModal").modal();
+    });
 
-                alert($date);
-                alert($time);
+    //keypress listener for all form controls
+    $(".form-control").keypress(function (event) {
+        //if enter is pressed
+        if (event.which == 13) {
+            //prevent the default action
+            event.preventDefault();
+            //and submit the form.
+            $("#submit").click();
+        }
+    });
 
-                if ($time == "All Day"){
-                    $("#all_day").val("1");
-                    var $newTime = $date + " 00:00:00";
-                }
-                else {
-                    $("#all_day").val("0");
-                    var $newTime = $date + " " + $time;
-                }
+    //submit listener for the add/modify homework modal.
+    $("#modal-form").submit(function(e) {
+        //prevent the default action.
+        e.preventDefault();
 
-                alert($newTime);
+        //grab the date value.
+        var $date = $("#due_date").val();
+        //and the time value.
+        var $time = $("#timepicker").val();
 
+        //if time is all day...
+        if ($time == "All Day"){
+            //set the hidden field all_day to 1 (true)
+            $("#all_day").val("1");
+            //and add 00:00:00 to the date value.
+            var $newTime = $date + " 00:00:00";
+        }
+        //otherwise...
+        else {
+            //set the hidden field all_day to 0 (false)
+            $("#all_day").val("0");
+            //and append the time onto date.
+            var $newTime = $date + " " + $time;
+        }
 
-                $("#due_date").val(moment($newTime, "YYYY-MM-DD hh:mma").format("YYYY-MM-DD HH:mm:ss"));
+        //set the hidden field due_date's value to the newly created time, formatted without am/pm and w/ secs.
+        $("#due_date").val(moment($newTime, "YYYY-MM-DD hh:mma").format("YYYY-MM-DD HH:mm:ss"));
 
-                alert($("#due_date").val());
-
-                alert($("#modal-form").attr("action"));
-
-                $.post($("#modal-form").attr("action"), $("#modal-form").serialize(), function(){
-
-                        $("#addHomeworkModal").modal('hide');
-                        $("#calendar").fullCalendar('refetchEvents');
-                });
-            });
-
-            $(".delete-btn").click(function(){
-
-//                $date = $("#due_date").val();
-//                $time = $("#timepicker").val();
-//
-//                $newTime = $date + " " + $time;
-//                $("#due_date").val(moment($newTime, "YYYY-MM-DD hh:mma").format("YYYY-MM-DD HH:mm:ss"));
-
-
-                $.post("deleteHomework.php", $("#modal-form").serialize(), function(){
-
-                    $("#addHomeworkModal").modal('hide');
-                    $("#calendar").fullCalendar('refetchEvents');
-                });
-
-            });
-
-            $(".add-class-button").click(function(){
-                $("#newClass").show();
-            });
-
-            $(".btn-save-sm").click(function(e){
-                e.preventDefault();
-
-                $(".btn-trash-sm").css({"margin-top":"-5px"});
-
-                $.post("addClass.php", $("#new-class-form").serialize(), function(){
-    //                    alert("done!");
-//                        $("#newClass").hide();
-                        location.reload();
-
-                });
-            });
-
-            $(".btn-modify-sm").click(function(e){
-                e.preventDefault();
-
-                var $buttonClicked = $(this).attr("id");
-                var $year, $class_num, $class_name, $instructor_name, $color;
-
-                var $class_id = $buttonClicked.substr(10);
-
-                $year = $(".year-form" + $class_id).val();
-                $class_num = $(".class-num-form" + $class_id).val();
-                $class_name = $(".class-name-form" + $class_id).val();
-                $instructor_name = $(".instructor-name-form" + $class_id).val();
-                $color = $(".color-form" + $class_id).val();
-
-//                alert($year);
-//                alert($class_num);
-//                alert($class_name);
-//                alert($instructor_name);
-//                alert($color);
-
-                $.post("modifyClass.php", {
-                    "class_id":$class_id,
-                    "year":$year,
-                    "class_num":$class_num,
-                    "class_name":$class_name,
-                    "instructor_name":$instructor_name,
-                    "color":$color
-
-
-                },
-
-                function(){
-
-                    location.reload();
-
-                });
-            });
-
-            $("#btn-trash-dismiss").click(function(e){
-               $("#newClass").hide();
-            });
+        //ajax post the form with the form's serialized data.
+        $.post($("#modal-form").attr("action"), $("#modal-form").serialize(), function(){
+            //on success..
+            //hide the modal
+            $("#addHomeworkModal").modal('hide');
+            //and refetch the events on the calendar.
+            $("#calendar").fullCalendar('refetchEvents');
         });
+    });
+
+    //click listener for the delete homework button
+    $(".delete-btn").click(function(){
+        //ajax post to deleteHomework.php with the serialized form data
+        $.post("deleteHomework.php", $("#modal-form").serialize(), function(){
+
+            //and on success...
+            //hide the modal
+            $("#addHomeworkModal").modal('hide');
+            //and refetch the events on the calendar.
+            $("#calendar").fullCalendar('refetchEvents');
+        });
+    });
+
+    //click function for the manage classes navbar button
+    $(".add-class-button").click(function(){
+        //show the modal to manage classes.
+        $("#newClass").show();
+    });
+
+    //click listener for the add class button
+    $(".btn-save-sm").click(function(e){
+        //prevent the default action
+        e.preventDefault();
+
+        //ajax post to addClass.php with the serialized data from the form.
+        $.post("addClass.php", $("#new-class-form").serialize(), function(){
+
+            //and reload the page
+            location.reload();
+
+        });
+    });
+
+    //click listener for the modify class button (save changes)
+    $(".btn-modify-sm").click(function(e){
+        //prevent the default action
+        e.preventDefault();
+
+        //var to store the clicked button's ID (this will be in the format of class-formidnum)
+        var $buttonClicked = $(this).attr("id");
+        //vars for year, class_num, class_name, instructor_name, and color
+        var $year, $class_num, $class_name, $instructor_name, $color;
+
+        //strip "class-form" off of id, leaving only the id of the class we're modifying.
+        var $class_id = $buttonClicked.substr(10);
+
+        //gather all the values from their respective inputs using the class_id from the submit button.
+        $year = $(".year-form" + $class_id).val();
+        $class_num = $(".class-num-form" + $class_id).val();
+        $class_name = $(".class-name-form" + $class_id).val();
+        $instructor_name = $(".instructor-name-form" + $class_id).val();
+        $color = $(".color-form" + $class_id).val();
+
+        //ajax post to modifyClass.php
+        $.post("modifyClass.php", {
+            //POST all of the data we gathered from the inputs
+            "class_id":$class_id,
+            "year":$year,
+            "class_num":$class_num,
+            "class_name":$class_name,
+            "instructor_name":$instructor_name,
+            "color":$color
+        },
+        //on success...
+        function(){
+            //reload the page.
+            location.reload();
+
+        });
+    });
+
+    //click listener for the trash icon on the new class
+    $("#btn-trash-dismiss").click(function(e){
+        //hide the new class form
+        $("#newClass").hide();
+    });
+});
 
     </script>
     <!--[if IE]>
@@ -380,7 +526,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!--                <img src="boonLogo.png" class="boon-logo-navbar">-->
                 <a class="navbar-brand logo-navbar">Boondoggle</a>
             </div>
             <div class="navbar-collapse collapse">

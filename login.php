@@ -2,8 +2,8 @@
     session_start();
 
     if(isset($_POST['username']) && isset($_POST['password'])){
-        $username = $_POST["username"];
-        $password = $_POST["password"];
+        $username = htmlspecialchars($_POST["username"]);
+        $password = htmlspecialchars($_POST["password"]);
 
         //open database connection
         $conn = mysql_connect('localhost','c2230a09','c2230a09') or trigger_error("SQL", E_USER_ERROR);
