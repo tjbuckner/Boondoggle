@@ -35,7 +35,7 @@
         //assign description.
         $row_array['description'] = htmlspecialchars_decode($row['description']);
         //assign class id.
-        $class_id = $row['class_id'];
+        $row_array['class_id'] = $row['class_id'];
         //assign instructor name.
         $row_array['instructor_name'] = htmlspecialchars_decode($row['instructor_name']);
         //assign year.

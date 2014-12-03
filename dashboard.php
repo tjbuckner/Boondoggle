@@ -167,8 +167,15 @@ $(document).ready(function () {
             $("#modal-form").attr("action", "modifyHomework.php");
             //set the text of the submit button to Save Changes.
             $(".submit").html("Save Changes");
-            //set the timepicker's time to the time of the event.
-            $("#timepicker").timepicker('setTime', calEvent.start.format("h:mma"));
+
+               if(calEvent.allDay){
+                    $("#timepicker").val("All Day");
+               }
+               else {
+                    //set the timepicker's time to the time of the event.
+                    $("#timepicker").timepicker('setTime', calEvent.start.format("h:mma"));
+               }
+
 
             //and show the prepared modal.
             $("#addHomeworkModal").modal();
