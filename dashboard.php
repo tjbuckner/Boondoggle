@@ -39,6 +39,21 @@ $(document).ready(function () {
     //var to store whether a view button has been selected (if it has, then disable autoresize for larger resolutions)
     var $autoresize = true;
 
+    //keydown listener to change calendar display w/ left and right.
+    $(document).keydown(function (e) {
+        switch (e.which) {
+        case 37: // left
+            $('#calendar').fullCalendar('prev');
+            break;
+        case 39: // right
+            $('#calendar').fullCalendar('next');
+            break;
+        default:
+            return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action.
+    });
+
     //initialize fullCalendar on the div with the id calendar.
     $('#calendar').fullCalendar({
         //define options for the header of the calendar
